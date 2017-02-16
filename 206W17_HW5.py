@@ -46,7 +46,7 @@ api = tweepy.API(auth, parser=tweepy.parsers.JSONParser()) # Set up library to g
 
 ## Write the rest of your code here!
 
-cache_filename = "cache_file.json"
+cache_filename = "cached_data_twitter.json"
 try:
   cache_file_obj = open(cache_filename,'r') 
   cache_contents = cache_file_obj.read() 
@@ -55,31 +55,22 @@ except:
 	CACHE_DICTION = {}
 
 def get_twitter_data(phrase):
-
 	unique_identifier = "twitter_{}".format(phrase)
 	if unique_identifier in CACHE_DICTION:
 		twitter_results = CACHE_DICTION[unique_identifier]
 	else:
-		twitter_results = api.user_timeline(phrase)
+		twitter_results = api.search(q = phrase)
 		CACHE_DICTION[unique_identifier] = twitter_results
 		f = open(cache_filename,'w')
 		f.write(json.dumps(CACHE_DICTION))
 		f.close()
+	tweet = twitter_results["statuses"][0]
+	list_of_tweets = twitter_results["statuses"]
+	for tweet in list_of_tweets[:3]:
+ 		print("TEXT:", tweet["text"])
+ 		print("CREATED AT:", tweet["created_at"])
+ 		print("\n")
 
-twitter_results = api.search(q = input("Enter a phrase"))
-# print(twitter_results)
-# print(type(twitter_results))
-# print(twitter_results.keys())
-tweet = twitter_results["statuses"][0]
-
-list_of_tweets = twitter_results["statuses"]
-
-for tweet in list_of_tweets[:3]:
- 	print("TEXT:", tweet["text"])
- 	print("CREATED AT:", tweet["created_at"])
- 	print("\n")
-
- 	
 
 #### Recommended order of tasks: ####
 ## 1. Set up the caching pattern start -- the dictionary and the try/except statement shown in class.
@@ -88,7 +79,9 @@ for tweet in list_of_tweets[:3]:
 ## 4. With what you learn from the data -- e.g. how exactly to find the text of each tweet in the big nested structure -- write code to print out content from 3 tweets, as shown above.
 
 
-
+if __name__ == "__main__":
+	phrase = input("Enter a phrase")
+	get_twitter_data(phrase)
 
 
 
