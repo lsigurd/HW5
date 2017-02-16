@@ -54,36 +54,31 @@ try:
 except:
 	CACHE_DICTION = {}
 
-# def canonical_order(d):
-#     alphabetized_keys = sorted(d.keys())
-#     res = []
-#     for k in alphabetized_keys:
-#         res.append((k, d[k]))
-#     return res
-    
-# def requestURL(baseurl, params = {}):
-#     req = requests.Request(method = 'GET', url = baseurl, params = canonical_order(params))
-#     prepped = req.prepare()
-#     return prepped.url
-
 def get_twitter_data(phrase):
-	twitter_results = api.search(q = input("Enter a phrase"))
-	# print(type(twitter_results))
-	# print(twitter_results.keys())
+
 	unique_identifier = "twitter_{}".format(phrase)
 	if unique_identifier in CACHE_DICTION:
 		twitter_results = CACHE_DICTION[unique_identifier]
 	else:
-		twitter_results = apu.user_timeline(phrase)
-		CACHE_DICTION[r] = twitter_results
+		twitter_results = api.user_timeline(phrase)
+		CACHE_DICTION[unique_identifier] = twitter_results
 		f = open(cache_filename,'w')
 		f.write(json.dumps(CACHE_DICTION))
 		f.close()
-list_of_text = []
-for tweet in twitter_results:
-list_of_text.append(tweet["text"])
-print("\n")
-return list_of_text
+
+twitter_results = api.search(q = input("Enter a phrase"))
+# print(twitter_results)
+# print(type(twitter_results))
+# print(twitter_results.keys())
+tweet = twitter_results["statuses"][0]
+
+list_of_tweets = twitter_results["statuses"]
+
+for tweet in list_of_tweets[:3]:
+ 	print("TEXT:", tweet["text"])
+ 	print("CREATED AT:", tweet["created_at"])
+ 	print("\n")
+
  	
 
 #### Recommended order of tasks: ####
