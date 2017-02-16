@@ -35,16 +35,56 @@ import json
 ## **** If you choose not to do that, we strongly advise using authentication information for an 'extra' Twitter account you make just for this class, and not your personal account, because it's not ideal to share your authentication information for a real account that you use frequently.
 
 ## Get your secret values to authenticate to Twitter. You may replace each of these with variables rather than filling in the empty strings if you choose to do the secure way for 50 EC points
-consumer_key = "" 
-consumer_secret = ""
-access_token = ""
-access_token_secret = ""
+consumer_key = "JyIwnWvsqywVX3d2dsu0IJCjH" 
+consumer_secret = "2MamjuobMEoDJ4Lo6fQziyR7yZvXBKNknWWscvnzCISkSc1l9X"
+access_token = "831735749301170177-VQSktBcdJ2CpZdNAGFIMc0kcUdgNndm"
+access_token_secret = "BK6H8gFIRXsFRDMrSXD7EVNhVBqSQRrgVtDbzVPBU42ys"
 ## Set up your authentication to Twitter
 auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
 auth.set_access_token(access_token, access_token_secret)
 api = tweepy.API(auth, parser=tweepy.parsers.JSONParser()) # Set up library to grab stuff from twitter with your authentication, and return it in a JSON-formatted way
 
 ## Write the rest of your code here!
+
+cache_filename = "cache_file.json"
+try:
+  cache_file_obj = open(cache_filename,'r') 
+  cache_contents = cache_file_obj.read() 
+  CACHE_DICTION = json.loads(cache_contents)
+except:
+	CACHE_DICTION = {}
+
+# def canonical_order(d):
+#     alphabetized_keys = sorted(d.keys())
+#     res = []
+#     for k in alphabetized_keys:
+#         res.append((k, d[k]))
+#     return res
+    
+# def requestURL(baseurl, params = {}):
+#     req = requests.Request(method = 'GET', url = baseurl, params = canonical_order(params))
+#     prepped = req.prepare()
+#     return prepped.url
+
+def get_twitter_data(phrase):
+	twitter_results = api.search(q = input("Enter a phrase"))
+	# print(type(twitter_results))
+	# print(twitter_results.keys())
+	unique_identifier = "twitter_{}".format(phrase)
+	if unique_identifier in CACHE_DICTION:
+		twitter_results = CACHE_DICTION[unique_identifier]
+	else:
+		twitter_results = apu.user_timeline(phrase)
+		CACHE_DICTION[r] = twitter_results
+		f = open(cache_filename,'w')
+		f.write(json.dumps(CACHE_DICTION))
+		f.close()
+list_of_text = []
+for tweet in twitter_results:
+list_of_text.append(tweet["text"])
+print("\n")
+return list_of_text
+ 	
 
 #### Recommended order of tasks: ####
 ## 1. Set up the caching pattern start -- the dictionary and the try/except statement shown in class.
