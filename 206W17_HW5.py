@@ -2,11 +2,12 @@ import unittest
 import tweepy
 import requests
 import json
+import get_twitter_info
 
 ## SI 206 - W17 - HW5
 ## COMMENT WITH:
-## Your section day/time:
-## Any names of people you worked with on this assignment:
+## Your section day/time: Thursday, 3pm-4pm
+## Any names of people you worked with on this assignment: Michael Braunstein, Gillian Shields
 
 ######## 500 points total ########
 
@@ -35,10 +36,10 @@ import json
 ## **** If you choose not to do that, we strongly advise using authentication information for an 'extra' Twitter account you make just for this class, and not your personal account, because it's not ideal to share your authentication information for a real account that you use frequently.
 
 ## Get your secret values to authenticate to Twitter. You may replace each of these with variables rather than filling in the empty strings if you choose to do the secure way for 50 EC points
-consumer_key = "JyIwnWvsqywVX3d2dsu0IJCjH" 
-consumer_secret = "2MamjuobMEoDJ4Lo6fQziyR7yZvXBKNknWWscvnzCISkSc1l9X"
-access_token = "831735749301170177-VQSktBcdJ2CpZdNAGFIMc0kcUdgNndm"
-access_token_secret = "BK6H8gFIRXsFRDMrSXD7EVNhVBqSQRrgVtDbzVPBU42ys"
+consumer_key = get_twitter_info.consumer_key 
+consumer_secret = get_twitter_info.consumer_secret
+access_token = get_twitter_info.access_token
+access_token_secret = get_twitter_info.access_token_secret
 ## Set up your authentication to Twitter
 auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
 auth.set_access_token(access_token, access_token_secret)
@@ -71,6 +72,9 @@ def get_twitter_data(phrase):
  		print("CREATED AT:", tweet["created_at"])
  		print("\n")
 
+if __name__ == "__main__":
+	phrase = input("Enter a phrase")
+	get_twitter_data(phrase)
 
 #### Recommended order of tasks: ####
 ## 1. Set up the caching pattern start -- the dictionary and the try/except statement shown in class.
@@ -79,9 +83,6 @@ def get_twitter_data(phrase):
 ## 4. With what you learn from the data -- e.g. how exactly to find the text of each tweet in the big nested structure -- write code to print out content from 3 tweets, as shown above.
 
 
-if __name__ == "__main__":
-	phrase = input("Enter a phrase")
-	get_twitter_data(phrase)
 
 
 
